@@ -41,6 +41,7 @@ const MovieDetail = () => {
           <p><strong>IMDb Rating:</strong> {movieDetails?.imdbRating}</p>
           <p><strong>Released:</strong> {movieDetails?.Released}</p>
           <p><strong>Plot:</strong> {movieDetails?.Plot}</p>
+          <p><strong>Country:</strong> {movieDetails?.Country}</p>
         </Col>
       </Row>
     </Container>

@@ -8,10 +8,10 @@ const axiosInstance = axios.create({
 
 const api_key = "5a5c4e58";
 
-export const getFirstRenderedMovies = async () => {
+export const getFirstRenderedMovies = async (query, page) => {
     try {
         const response = await 
-            axiosInstance.get(`?s=Pokemon&page=1&apikey=${api_key}`)
+            axiosInstance.get(`?s=${query}&page=${page}&apikey=${api_key}`)
         return response.data.Search
     }
     catch (error) {
