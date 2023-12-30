@@ -134,21 +134,21 @@ const Main = () => {
                             ) : (
                                 filteredMovies?.map((movie) => (
                                     <Col sm={6} lg={4} xs={12} key={movie.imdbID}>
-                                        <div className="movie-card">
-                                            <Link to={`/${movie.imdbID}`}>
-                                                {movie.Poster !== "N/A" ?
-                                                    <img src={movie.Poster} alt="" />
-                                                    : <img src={"https://placehold.co/400x400"} alt="" />
-                                                }
-                                            </Link>
-                                            <div className="movie-details">
-                                                <h3>{movie.Title}</h3>
-                                                <p>IMDb ID: {movie.imdbID}</p>
-                                                <p>Released Date: {movie.Released ? movie.Released : movie.Year}</p>
-                                                {movie.Episode && <p>Episode: <strong>
-                                                    {movie.Episode}</strong> </p>}
+                                        <Link className='no-underline-link' to={`/${movie.imdbID}`}>
+                                            <div className="movie-card">
+                                                    {movie.Poster !== "N/A" ?
+                                                        <img src={movie.Poster} alt="" />
+                                                        : <img src={"https://placehold.co/400x400"} alt="" />
+                                                    }
+                                                <div className="movie-details">
+                                                    <h3>{movie.Title}</h3>
+                                                    <p>IMDb ID: {movie.imdbID}</p>
+                                                    <p>Released Date: {movie.Released ? movie.Released : movie.Year}</p>
+                                                    {movie.Episode && <p>Episode: <strong>
+                                                        {movie.Episode}</strong> </p>}
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </Col>
                                 ))
                             )}
