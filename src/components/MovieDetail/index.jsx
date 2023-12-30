@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
-import './detail.scss';
 import { getMovieDetails } from '../../utils/api';
 import NavBar from '../Navbar';
 
