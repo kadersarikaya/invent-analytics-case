@@ -124,7 +124,7 @@ const Main = () => {
                         </Row>
                     ) : (
                         <Row>
-                            {!filteredMovies && filteredMovies.length === 0 ? (
+                            {!filteredMovies || filteredMovies.length === 0 ? (
                                 <div className="error">
                                     <p >No movies found!</p>
                                         <Button onClick={() => setQuery("Pokemon")} variant='light' >
