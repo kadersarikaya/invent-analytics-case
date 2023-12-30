@@ -97,7 +97,7 @@ const Main = () => {
 
     return (
         <>
-            <NavBar query={query} setQuery={setQuery} />
+            <NavBar setQuery={setQuery} />
             <div className="container">
                 <ButtonGroup className="mb-2">
                     <Button variant="secondary" onClick={handleAllFilter}>All</Button>

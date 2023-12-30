@@ -1,7 +1,7 @@
 // MovieDetail.js
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import './detail.scss';
 import { getMovieDetails } from '../../utils/api';
 import NavBar from '../Navbar';
@@ -23,7 +23,9 @@ const MovieDetail = () => {
   }, [id]);
 
   if (!movieDetails) {
-    return <div>Loading...</div>;
+    return (!movieDetails && <Spinner animation="border" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>)
   }
 
   return (

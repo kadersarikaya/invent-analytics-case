@@ -49,6 +49,6 @@ function NavBar({setQuery}) {
 }
 
 NavBar.propTypes = {
-    setQuery: PropTypes.func.isRequired,
+    setQuery: PropTypes.func,
 };
 export default NavBar;
