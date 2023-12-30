@@ -127,9 +127,9 @@ const Main = () => {
                             {!filteredMovies || filteredMovies.length === 0 ? (
                                 <div className="error">
                                     <p >No movies found!</p>
-                                    <Button variant='light' >
-                                        {`Back to Home -> `}
-                                    </Button>
+                                        <Button onClick={() => setQuery("Pokemon")} variant='light' >
+                                            {`Back to Home -> `}
+                                        </Button>
                                 </div>
                             ) : (
                                 filteredMovies?.map((movie) => (
