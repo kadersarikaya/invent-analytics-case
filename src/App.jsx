@@ -1,12 +1,11 @@
 import Main from './components/Main'
-import NavBar from './components/Navbar'
+import Footer from './components/Footer'
 
 function App() {
-
   return (
     <>
-      <NavBar/>
       <Main/>
+      <Footer/>
     </>
   )
 }

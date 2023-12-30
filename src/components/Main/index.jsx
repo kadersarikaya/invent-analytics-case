@@ -1,25 +1,28 @@
 import { useState, useEffect } from 'react';
 import './main.scss'
-import { getFirstRenderedMovies } from '../../utils/api';
-import { Container, Row, Col, 
-ButtonGroup, Button, Pagination, DropdownButton, Dropdown} from 'react-bootstrap';
+import { getEpisodes, getMovies } from '../../utils/api';
+import {
+    Container, Row, Col,
+    ButtonGroup, Button, Pagination, DropdownButton, Dropdown
+} from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import NavBar from '../Navbar'
+import MovieCardSkeleton from '../Skeleton';
 
 const Main = () => {
     const [originalMovies, setOriginalMovies] = useState([]);
     const [filteredMovies, setFilteredMovies] = useState([]);
-    const [filterType, setFilterType] = useState(null);
-
+    const [, setFilterType] = useState(null);
     const [loading, setLoading] = useState(false);
     const [query, setQuery] = useState("Pokemon")
     const [page, setPage] = useState(1);
-    const [year,setYear] = useState(null)
+    const [, setYear] = useState(null)
 
     useEffect(() => {
         const fetchMovies = async () => {
             try {
                 setLoading(true)
-                const response = await getFirstRenderedMovies(query, page)
+                const response = await getMovies(query, page)
                 setOriginalMovies(response);
                 setFilteredMovies(response);
                 setLoading(false)
@@ -30,6 +33,7 @@ const Main = () => {
         }
         fetchMovies()
     }, [page, query])
+
 
     const filterByType = (type) => {
         setFilterType(type);
@@ -60,10 +64,26 @@ const Main = () => {
     };
 
     const handlePageChange = (pageNumber) => {
-        if(pageNumber>0) {
+        if (pageNumber > 0) {
             setPage(pageNumber);
         }
     };
+
+    const handleEpisodes = () => {
+        const fetchEpisodes = async () => {
+            try {
+                setLoading(true)
+                const response = await getEpisodes(query, 1)
+                setFilteredMovies(response.Episodes);
+                setLoading(false)
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        fetchEpisodes()
+    }
+
 
     let active = page;
     let items = [];
@@ -74,56 +94,78 @@ const Main = () => {
             </Pagination.Item>,
         );
     }
-    
-    return (
-        <div className="container">
-            <ButtonGroup className="mb-2">
-                <Button variant="secondary" onClick={handleAllFilter}>All</Button>
-                <Button variant="secondary" onClick={handleMovieFilter}>Movies</Button>
-                <Button variant="secondary" onClick={handleSeriesFilter}>Series</Button>
-                <Button variant="secondary">Episodes</Button>
-                <DropdownButton variant="secondary" as={ButtonGroup} title="Year" id="bg-nested-dropdown">
-                    {Array.from(new Set(originalMovies.map(movie => movie.Year))).map(year => (
-                        <Dropdown.Item key={year} onClick={() => handleYearFilter(year)}>
-                            {year}
-                        </Dropdown.Item>
-                    ))}
-                </DropdownButton>
-            </ButtonGroup>
 
-            <Container>
-                <Row>
-                    {loading ? "loading" : 
-                        <>
-                            {filteredMovies?.map((movie) => (
-                                <Col sm={6} lg={4} xs={12}
-                                    key={movie.imdbID} >
-                                    <Link to={`/${movie.Type}/${movie.imdbID}`} className="no-underline-link" >
+    return (
+        <>
+            <NavBar query={query} setQuery={setQuery} />
+            <div className="container">
+                <ButtonGroup className="mb-2">
+                    <Button variant="secondary" onClick={handleAllFilter}>All</Button>
+                    <Button variant="secondary" onClick={handleMovieFilter}>Movies</Button>
+                    <Button variant="secondary" onClick={handleSeriesFilter}>Series</Button>
+                    <Button variant="secondary" onClick={handleEpisodes}>Episodes</Button>
+                    <DropdownButton variant="secondary" as={ButtonGroup} title="Year" id="bg-nested-dropdown">
+                        {Array.from(new Set(originalMovies?.map(movie => movie.Year))).map(year => (
+                            <Dropdown.Item key={year} onClick={() => handleYearFilter(year)}>
+                                {year}
+                            </Dropdown.Item>
+                        ))}
+                    </DropdownButton>
+                </ButtonGroup>
+
+                <Container>
+                    {loading ? (
+                        <Row className="g-4">
+                            {[...Array(10)].map((_, index) => (
+                                <Col  sm={6} lg={4} xs={12} key={index}>
+                                    <MovieCardSkeleton />
+                                </Col>
+                            ))}
+                        </Row>
+                    ) : (
+                        <Row>
+                            {!filteredMovies || filteredMovies.length === 0 ? (
+                                <div className="error">
+                                    <p >No movies found!</p>
+                                    <Button variant='light' >
+                                        {`Back to Home -> `}
+                                    </Button>
+                                </div>
+                            ) : (
+                                filteredMovies?.map((movie) => (
+                                    <Col sm={6} lg={4} xs={12} key={movie.imdbID}>
                                         <div className="movie-card">
-                                            <img src={movie.Poster} alt="" />
+                                            <Link to={`/${movie.imdbID}`}>
+                                                {movie.Poster !== "N/A" ?
+                                                    <img src={movie.Poster} alt="" />
+                                                    : <img src={"https://placehold.co/400x400"} alt="" />
+                                                }
+                                            </Link>
                                             <div className="movie-details">
                                                 <h3>{movie.Title}</h3>
                                                 <p>IMDb ID: {movie.imdbID}</p>
-                                                <p>Year: {movie.Year}</p>
+                                                <p>Released Date: {movie.Released ? movie.Released : movie.Year}</p>
+                                                {movie.Episode && <p>Episode: <strong>
+                                                    {movie.Episode}</strong> </p>}
                                             </div>
                                         </div>
-                                    </Link>
-                                </Col>
-                            ))}
-                        </>
-                    }
-                </Row> 
-            </Container>
+                                    </Col>
+                                ))
+                            )}
+                        </Row>
+                    )}
+                </Container>
 
-            <Pagination className='pagination'>
-                <Pagination.First onClick={() => handlePageChange(1)} />
-                <Pagination.Prev onClick={() => handlePageChange(page - 1)} />
-                {items}
-                <Pagination.Ellipsis />
-                <Pagination.Next onClick={() => handlePageChange(page + 1)} />
-                <Pagination.Last onClick={() => handlePageChange(5)} />
-            </Pagination>
-        </div>
+                <Pagination className='pagination'>
+                    <Pagination.First onClick={() => handlePageChange(1)} />
+                    <Pagination.Prev onClick={() => handlePageChange(page - 1)} />
+                    {items}
+                    <Pagination.Ellipsis />
+                    <Pagination.Next onClick={() => handlePageChange(page + 1)} />
+                    <Pagination.Last onClick={() => handlePageChange(5)} />
+                </Pagination>
+            </div>
+        </>
     );
 };
 

@@ -1,0 +1,31 @@
+// MovieCardSkeleton.scss
+
+.movie-card-skeleton {
+    position: relative;
+    width: 100%;
+    height: 400px; // Adjust the height based on your card size
+    background-color: #f0f0f0; // Adjust the background color
+    border-radius: 8px; // Adjust the border-radius to match your card design
+    overflow: hidden;
+
+    .skeleton-animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+
+        100% {
+            background-position: -200% 0;
+        }
+    }
+}

@@ -1,0 +1,47 @@
+.footer {
+    background-color: #222;
+    color: white;
+    padding: 40px 0;
+
+    h4 {
+        color: #ffc107;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin-bottom: 10px;
+
+            a {
+                color: #ffc107;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+.footer-bottom {
+    background-color: #111;
+    padding: 10px 0;
+    text-align: center;
+
+    p {
+        margin: 0;
+        color: #777;
+        font-size: 14px;
+    }
+}
